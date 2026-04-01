@@ -39,8 +39,7 @@ NEBULA OS is a hyper-modern, enterprise-grade analytical suite designed for high
    streamlit run src/main.py
    ```
 3. **Access Identity:**
-   * **Quantum ID:** `admin`
-   * **Cypher Key:** `enterprise2026`
+  **For the Access you can use it to register yourself and then u can login**
 
 ## 📡 DevOps & Engineering
 *   **CI/CD Pipeline:** Automated testing and linting via GitHub Actions.
