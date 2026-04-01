@@ -8,22 +8,34 @@ from dotenv import load_dotenv
 # Load environment variables (for local dev)
 load_dotenv()
 
-# Supabase Configuration
-def get_credential(key, default=None):
-    try:
-        return st.secrets.get(key) or os.getenv(key) or default
-    except Exception:
-        return os.getenv(key) or default
-
-SUPABASE_URL = get_credential("SUPABASE_URL", "https://rgcmxhvomatsdapcgdzd.supabase.co")
-SUPABASE_KEY = get_credential("SUPABASE_KEY")
-
 def get_supabase() -> Client:
-    """Initializes the Supabase client."""
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        st.error("Supabase credentials missing. Please configure SUPABASE_URL and SUPABASE_KEY.")
+    """Initializes the Supabase client with robust secret handling."""
+    
+    # 1. Attempt to pull from Streamlit Secrets
+    url = st.secrets.get("SUPABASE_URL")
+    key = st.secrets.get("SUPABASE_KEY")
+    
+    # 2. Fallback to Environment Variables (Local)
+    if not url: url = os.getenv("SUPABASE_URL")
+    if not key: key = os.getenv("SUPABASE_KEY")
+    
+    # 3. Last Resort: Hardcoded URL default (Your Project ID)
+    if not url: url = "https://rgcmxhvomatsdapcgdzd.supabase.co"
+
+    # Validate presence
+    if not url or not key:
+        st.error("🌌 **NEBULA OS | CONNECTION ERROR**")
+        st.info("Supabase credentials are not detected in Streamlit Secrets or .env file.")
+        st.code("""# Streamlit Cloud Secrets Format:
+SUPABASE_URL = "https://your-project.supabase.co"
+SUPABASE_KEY = "your-anon-key" """, language="toml")
         return None
-    return create_client(SUPABASE_URL, SUPABASE_KEY)
+        
+    try:
+        return create_client(url, key)
+    except Exception as e:
+        st.error(f"Failed to initialize Supabase client: {e}")
+        return None
 
 def register_user(username, password, name=""):
     """Registers a new entity into Supabase 'users' table."""
