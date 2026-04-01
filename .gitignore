@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+env/
+venv/
+ENV/
+
+# Secrets & Local Data
+.env
+src/utils/users.json
+
+# Streamlit
+.streamlit/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Large data files
+*.csv
+*.xlsx
+*.xls
+*.docx
+*.pdf
+!README.md
